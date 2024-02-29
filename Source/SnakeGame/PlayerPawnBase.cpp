@@ -22,13 +22,13 @@ void APlayerPawnBase::BeginPlay()
 	Super::BeginPlay();
 	SetActorRotation(FRotator(-90, 0, 0));
 	CreateSnakeActor();
+	SnakeActor->RotateBlock = 0;
 }
 
 // Called every frame
 void APlayerPawnBase::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
 }
 
 // Called to bind functionality to input
@@ -49,10 +49,16 @@ void APlayerPawnBase::HandlePlayerVerticalInput(float value)
 {
 	if (IsValid(SnakeActor))
 	{
-		if (value > 0 && SnakeActor->LastMoveDirection!=EMovementDirection::DOWN)
+		if (value > 0 && SnakeActor->LastMoveDirection != EMovementDirection::DOWN && SnakeActor->RotateBlock != 1)
+		{
 			SnakeActor->LastMoveDirection = EMovementDirection::UP;
-		else if (value < 0 && SnakeActor->LastMoveDirection != EMovementDirection::UP)
+			SnakeActor->RotateBlock = 1;
+		}
+		else if (value < 0 && SnakeActor->LastMoveDirection != EMovementDirection::UP && SnakeActor->RotateBlock != 1)
+		{
 			SnakeActor->LastMoveDirection = EMovementDirection::DOWN;
+			SnakeActor->RotateBlock = 1;
+		}
 	}
 }
 
@@ -60,10 +66,16 @@ void APlayerPawnBase::HandlePlayerHorizontalInput(float value)
 {
 	if (IsValid(SnakeActor))
 	{
-		if (value > 0 && SnakeActor->LastMoveDirection != EMovementDirection::LEFT)
+		if (value > 0 && SnakeActor->LastMoveDirection != EMovementDirection::LEFT && SnakeActor->RotateBlock != 1)
+		{
 			SnakeActor->LastMoveDirection = EMovementDirection::RIGHT;
-		else if (value < 0 && SnakeActor->LastMoveDirection != EMovementDirection::RIGHT)
+			SnakeActor->RotateBlock = 1;
+		}
+		else if (value < 0 && SnakeActor->LastMoveDirection != EMovementDirection::RIGHT && SnakeActor->RotateBlock != 1)
+		{
 			SnakeActor->LastMoveDirection = EMovementDirection::LEFT;
+			SnakeActor->RotateBlock = 1;
+		}
 	}
 }
 
