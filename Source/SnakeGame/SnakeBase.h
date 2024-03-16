@@ -43,7 +43,7 @@ public:
 	EMovementDirection LastMoveDirection;
 
 	UPROPERTY(EditAnywhere)
-	bool RotateBlock;
+	bool RotateBlock = 0;
 
 protected:
 	// Called when the game starts or when spawned
@@ -53,7 +53,10 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
+	UFUNCTION(BlueprintCallable)
 	void AddSnakeElement(int ElementsNum = 1);
-
+	UFUNCTION(BlueprintCallable)
 	void Move();
+	UFUNCTION()
+	void SnakeElemenetOverlap(ASnakeElementBase* OverlappedElement, AActor* Other);
 };
