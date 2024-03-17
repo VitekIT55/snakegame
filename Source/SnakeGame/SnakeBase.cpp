@@ -34,22 +34,45 @@ void ASnakeBase::AddSnakeElement(int ElementsNum)
 {
 	for (int i = 0; i < ElementsNum; ++i)
 	{
-		FVector NewLocation(SnakeElements.Num() * ElementSize, 0, 0);
-		FTransform NewTransform(NewLocation);
-		ASnakeElementBase* NewSnakeElem = GetWorld()->SpawnActor<ASnakeElementBase>(SnakeElementClass, NewTransform);
-		NewSnakeElem->SnakeOwner = this;
-		int32 ElemIndex = SnakeElements.Add(NewSnakeElem);
-		if (ElemIndex == 0)
+		//if (SnakeElements.Num() < 4)
+		if (ElementsNum != 0)
 		{
-			NewSnakeElem->SetFirstElementType();
+			//while (i < SnakeElements.Num())
+			//{
+				//++i;
+				FVector NewLocation(SnakeElements.Num() * ElementSize, 0, 0);
+				FTransform NewTransform(NewLocation);
+				ASnakeElementBase* NewSnakeElem = GetWorld()->SpawnActor<ASnakeElementBase>(SnakeElementClass, NewTransform);
+				NewSnakeElem->SnakeOwner = this;
+				int32 ElemIndex = SnakeElements.Add(NewSnakeElem);
+				if (ElemIndex == 0)
+				{
+					NewSnakeElem->SetFirstElementType();
+				}
+				//i++;
+			//}
 		}
+		//else
+		//{
+		//	FVector NewLocation = SnakeElements[i]->GetActorLocation();
+		//	//FVector NewLocation(SnakeElements.Num() * ElementSize, 0, 0);
+		//	FTransform NewTransform(NewLocation);
+		//	ASnakeElementBase* NewSnakeElem = GetWorld()->SpawnActor<ASnakeElementBase>(SnakeElementClass, NewTransform);
+		//	NewSnakeElem->SnakeOwner = this;
+		//	int32 ElemIndex = SnakeElements.Add(NewSnakeElem);
+		//}
+		//auto PrevElement = SnakeElements[i - 1];
+		//FVector PrevLocation = PrevElement->GetActorLocation();
+		//CurrentElement->SetActorLocation(PrevLocation);
+		//auto ActorElement = SnakeElements[i];
+		//FVector NewLocation = ActorElement->GetActorLocation();
+		//FVector NewLocation(ActorLocation * ElementSize, 0, 0);
 	}
 }
 
 void ASnakeBase::Move()
 {
 	FVector MovementVector(FVector::ZeroVector);
-	//MovementSpeed = ElementSize;
 	switch (LastMoveDirection)
 	{
 	case EMovementDirection::UP:
