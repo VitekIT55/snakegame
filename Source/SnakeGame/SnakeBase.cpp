@@ -4,6 +4,7 @@
 #include "SnakeBase.h"
 #include "SnakeElementBase.h"
 #include "Interactable.h"
+#include "Engine/GameEngine.h"
 
 // Sets default values
 ASnakeBase::ASnakeBase()
@@ -34,39 +35,22 @@ void ASnakeBase::AddSnakeElement(int ElementsNum)
 {
 	for (int i = 0; i < ElementsNum; ++i)
 	{
-		//if (SnakeElements.Num() < 4)
-		if (ElementsNum != 0)
+		auto NewLocation = FVector(0, 0, 0);
+		if(SnakeElements.Num()>=4)
+			NewLocation = SnakeElements[SnakeElements.Num() - 1]->GetActorLocation();
+		else
+			NewLocation = FVector(SnakeElements.Num() * ElementSize, 0, 0);
+		FTransform NewTransform(NewLocation);
+		ASnakeElementBase* NewSnakeElem = GetWorld()->SpawnActor<ASnakeElementBase>(SnakeElementClass, NewTransform);
+		NewSnakeElem->SnakeOwner = this;
+		int32 ElemIndex = SnakeElements.Add(NewSnakeElem);
+		if (ElemIndex == 0)
 		{
-			//while (i < SnakeElements.Num())
-			//{
-				//++i;
-				FVector NewLocation(SnakeElements.Num() * ElementSize, 0, 0);
-				FTransform NewTransform(NewLocation);
-				ASnakeElementBase* NewSnakeElem = GetWorld()->SpawnActor<ASnakeElementBase>(SnakeElementClass, NewTransform);
-				NewSnakeElem->SnakeOwner = this;
-				int32 ElemIndex = SnakeElements.Add(NewSnakeElem);
-				if (ElemIndex == 0)
-				{
-					NewSnakeElem->SetFirstElementType();
-				}
-				//i++;
-			//}
+			NewSnakeElem->SetFirstElementType();
 		}
-		//else
-		//{
-		//	FVector NewLocation = SnakeElements[i]->GetActorLocation();
-		//	//FVector NewLocation(SnakeElements.Num() * ElementSize, 0, 0);
-		//	FTransform NewTransform(NewLocation);
-		//	ASnakeElementBase* NewSnakeElem = GetWorld()->SpawnActor<ASnakeElementBase>(SnakeElementClass, NewTransform);
-		//	NewSnakeElem->SnakeOwner = this;
-		//	int32 ElemIndex = SnakeElements.Add(NewSnakeElem);
-		//}
-		//auto PrevElement = SnakeElements[i - 1];
-		//FVector PrevLocation = PrevElement->GetActorLocation();
-		//CurrentElement->SetActorLocation(PrevLocation);
-		//auto ActorElement = SnakeElements[i];
-		//FVector NewLocation = ActorElement->GetActorLocation();
-		//FVector NewLocation(ActorLocation * ElementSize, 0, 0);
+		auto a = SnakeElements[i]->GetActorLocation();
+		GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, a.ToString());
+		GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, FString::Printf(TEXT("i: %i"), i));
 	}
 }
 
