@@ -27,6 +27,12 @@ public:
 	UPROPERTY(EditDefaultsOnly)
 	TSubclassOf<ASnakeBase> SnakeActorClass;
 
+	UPROPERTY(BlueprintReadWrite)
+	int Score = 13;
+
+	UPROPERTY(BlueprintReadWrite)
+	float Hunger = 0.5;
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
