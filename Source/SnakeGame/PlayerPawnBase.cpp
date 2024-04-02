@@ -2,8 +2,9 @@
 
 
 #include "PlayerPawnBase.h"
+#include "Engine/GameEngine.h"
+#include "Food.h"
 #include "Engine/Classes/Camera/CameraComponent.h"
-#include "SnakeBase.h"
 #include "Components/InputComponent.h"
 
 // Sets default values
@@ -11,7 +12,6 @@ APlayerPawnBase::APlayerPawnBase()
 {
  	// Set this pawn to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
-
 	PawnCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("PawnCamera"));
 	RootComponent = PawnCamera;
 }
@@ -28,6 +28,21 @@ void APlayerPawnBase::BeginPlay()
 void APlayerPawnBase::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+	auto a = SpawnTimer;
+	FString TheFloatStr = FString::SanitizeFloat(a);
+	GEngine->AddOnScreenDebugMessage(-1, 1.0, FColor::Red, *TheFloatStr);
+	if (Hunger == 0.0f)
+		SnakeActor->Destroy();
+	else
+		Hunger -= 0.001;
+	SpawnTimer -= 1.0f;
+	if (SpawnTimer == 0.0f)
+	{
+		SpawnDelayX = FMath::RandRange(-500.0f, 500.0f);
+		SpawnDelayX = FMath::RandRange(-500.0f, 500.0f);
+		SpawnRandomActor(SpawnDelayX, SpawnDelayY);
+		SpawnTimer = 500.0f;
+	}
 }
 
 // Called to bind functionality to input
@@ -42,6 +57,18 @@ void APlayerPawnBase::SetupPlayerInputComponent(UInputComponent* PlayerInputComp
 void APlayerPawnBase::CreateSnakeActor()
 {
 	SnakeActor = GetWorld()->SpawnActor<ASnakeBase>(SnakeActorClass, FTransform());
+}
+
+void APlayerPawnBase::SpawnRandomActor(float X, float Y)
+{
+	//FoodActor = GetWorld()->SpawnActor<AFood>(FoodClass, FTransform());
+	FVector Location(X, Y, 0.0f);
+	FRotator Rotation(0.0f, 0.0f, 0.0f);
+	FActorSpawnParameters SpawnInfo;
+	GetWorld()->SpawnActor<AFood>(Location, Rotation, SpawnInfo);
+	//FVector Location(0.0f, 0.0f, 0.0f); FRotator Rotation(0.0f, 0.0f, 0.0f); 
+	//FActorSpawnParameters SpawnInfo; 
+	//GetWorld()->SpawnActor<AProjectile>(Location, Rotation, SpawnInfo);
 }
 
 void APlayerPawnBase::HandlePlayerVerticalInput(float value)

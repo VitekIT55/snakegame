@@ -2,12 +2,14 @@
 
 #pragma once
 
+#include "SnakeBase.h"
 #include "CoreMinimal.h"
 #include "GameFramework/Pawn.h"
 #include "PlayerPawnBase.generated.h"
 
 class UCameraComponent;
 class ASnakeBase;
+//class AFood;
 
 UCLASS()
 class SNAKEGAME_API APlayerPawnBase : public APawn
@@ -27,11 +29,26 @@ public:
 	UPROPERTY(EditDefaultsOnly)
 	TSubclassOf<ASnakeBase> SnakeActorClass;
 
-	UPROPERTY(BlueprintReadWrite)
-	int Score = 13;
+	//UPROPERTY(BlueprintReadWrite)
+	//AFood* FoodActor;
 
-	UPROPERTY(BlueprintReadWrite)
-	float Hunger = 0.5;
+	//UPROPERTY(EditDefaultsOnly)
+	//TSubclassOf<AFood> FoodClass;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	int Score = 0;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	float Hunger = 1.0f;
+
+	UPROPERTY()
+	float SpawnDelayX = 0.0f;
+
+	UPROPERTY()
+	float SpawnDelayY = 0.0f;
+
+	UPROPERTY()
+	float SpawnTimer = 500.0f;
 
 protected:
 	// Called when the game starts or when spawned
@@ -45,6 +62,7 @@ public:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
 	void CreateSnakeActor();
+	void SpawnRandomActor(float X, float Y);
 
 	UFUNCTION()
 	void HandlePlayerVerticalInput(float value);

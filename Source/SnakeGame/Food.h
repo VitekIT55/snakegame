@@ -3,9 +3,13 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "SnakeBase.h"
+#include "PlayerPawnBase.h"
 #include "GameFramework/Actor.h"
 #include "Interactable.h"
 #include "Food.generated.h"
+
+class APlayerPawnBase;
 
 UCLASS()
 class SNAKEGAME_API AFood : public AActor, public IInteractable
@@ -15,6 +19,12 @@ class SNAKEGAME_API AFood : public AActor, public IInteractable
 public:	
 	// Sets default values for this actor's properties
 	AFood();
+
+	UPROPERTY(BlueprintReadWrite)
+	APlayerPawnBase* PlayerPawn;
+
+	UPROPERTY(EditDefaultsOnly)
+	TSubclassOf<APlayerPawnBase> PlayerPawnClass;
 
 protected:
 	// Called when the game starts or when spawned
