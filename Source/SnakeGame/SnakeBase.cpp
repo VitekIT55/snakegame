@@ -31,6 +31,11 @@ void ASnakeBase::Tick(float DeltaTime)
 	Move();
 }
 
+void ASnakeBase::DestroySnake()
+{
+	ASnakeBase::Destroy();
+}
+
 void ASnakeBase::AddSnakeElement(int ElementsNum)
 {
 	for (int i = 0; i < ElementsNum; ++i)

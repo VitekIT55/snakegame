@@ -30,18 +30,25 @@ void APlayerPawnBase::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 	auto a = SpawnTimer;
 	FString TheFloatStr = FString::SanitizeFloat(a);
-	GEngine->AddOnScreenDebugMessage(-1, 1.0, FColor::Red, *TheFloatStr);
-	if (Hunger == 0.0f)
-		SnakeActor->Destroy();
-	else
-		Hunger -= 0.001;
-	SpawnTimer -= 1.0f;
-	if (SpawnTimer == 0.0f)
+	if (SnakeActor)
 	{
-		SpawnDelayX = FMath::RandRange(-500.0f, 500.0f);
-		SpawnDelayX = FMath::RandRange(-500.0f, 500.0f);
-		SpawnRandomActor(SpawnDelayX, SpawnDelayY);
-		SpawnTimer = 500.0f;
+		if (SpawnTimer % 50 == 0)
+			GEngine->AddOnScreenDebugMessage(-1, 1.0, FColor::Red, *TheFloatStr);
+		if (Hunger <= 0)
+		{
+			SnakeActor->DestroySnake();
+			GetWorld()->ForceGarbageCollection(true);
+		}
+		else if (Hunger > -0.1)
+			Hunger -= 0.001;
+		SpawnTimer -= 1;
+		if (SpawnTimer == 0)
+		{
+			SpawnDelayX = FMath::RandRange(-7, 7); SpawnDelayX *= int(SnakeActor->ElementSize);
+			SpawnDelayY = FMath::RandRange(-7, 7); SpawnDelayY *= int(SnakeActor->ElementSize);
+			SpawnRandomActor(SpawnDelayX, SpawnDelayY);
+			SpawnTimer = 500;
+		}
 	}
 }
 
@@ -61,14 +68,10 @@ void APlayerPawnBase::CreateSnakeActor()
 
 void APlayerPawnBase::SpawnRandomActor(float X, float Y)
 {
-	//FoodActor = GetWorld()->SpawnActor<AFood>(FoodClass, FTransform());
-	FVector Location(X, Y, 0.0f);
+	FVector Location(X, Y, 10.0f);
 	FRotator Rotation(0.0f, 0.0f, 0.0f);
 	FActorSpawnParameters SpawnInfo;
-	GetWorld()->SpawnActor<AFood>(Location, Rotation, SpawnInfo);
-	//FVector Location(0.0f, 0.0f, 0.0f); FRotator Rotation(0.0f, 0.0f, 0.0f); 
-	//FActorSpawnParameters SpawnInfo; 
-	//GetWorld()->SpawnActor<AProjectile>(Location, Rotation, SpawnInfo);
+	GetWorld()->SpawnActor<AActor>(FoodClass, Location, Rotation);
 }
 
 void APlayerPawnBase::HandlePlayerVerticalInput(float value)

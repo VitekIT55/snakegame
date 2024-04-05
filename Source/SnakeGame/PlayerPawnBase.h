@@ -9,7 +9,6 @@
 
 class UCameraComponent;
 class ASnakeBase;
-//class AFood;
 
 UCLASS()
 class SNAKEGAME_API APlayerPawnBase : public APawn
@@ -29,17 +28,11 @@ public:
 	UPROPERTY(EditDefaultsOnly)
 	TSubclassOf<ASnakeBase> SnakeActorClass;
 
-	//UPROPERTY(BlueprintReadWrite)
-	//AFood* FoodActor;
-
-	//UPROPERTY(EditDefaultsOnly)
-	//TSubclassOf<AFood> FoodClass;
-
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	int Score = 0;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	float Hunger = 1.0f;
+	float Hunger = 1;
 
 	UPROPERTY()
 	float SpawnDelayX = 0.0f;
@@ -48,7 +41,7 @@ public:
 	float SpawnDelayY = 0.0f;
 
 	UPROPERTY()
-	float SpawnTimer = 500.0f;
+	int SpawnTimer = 500;
 
 protected:
 	// Called when the game starts or when spawned
@@ -60,6 +53,9 @@ public:
 
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+
+	UPROPERTY(EditDefaultsOnly)
+	TSubclassOf<AActor> FoodClass;
 
 	void CreateSnakeActor();
 	void SpawnRandomActor(float X, float Y);

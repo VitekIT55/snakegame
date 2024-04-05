@@ -33,7 +33,8 @@ void AWall::Interact(AActor* Interactor, bool bIsHead)
 		auto Snake = Cast<ASnakeBase>(Interactor);
 		if (IsValid(Snake))
 		{
-			Snake->Destroy();
+			//Snake->Destroy();
+			Snake->DestroySnake();
 		}
 	}
 }

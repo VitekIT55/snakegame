@@ -2,7 +2,6 @@
 
 
 #include "Food.h"
-//#include "SnakeBase.h"
 #include "Engine/GameEngine.h"
 #include "PlayerPawnBase.h"
 #include <Kismet/GameplayStatics.h>
@@ -41,7 +40,7 @@ void AFood::Interact(AActor* Interactor, bool bIsHead)
 		{
 			auto a = PlayerPawn->Hunger;
 			GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, FString::Printf(TEXT("a: %a"), a));
-			PlayerPawn->Hunger = 1.0f;
+			PlayerPawn->Hunger = 1;
 			PlayerPawn->Score += 1;
 		}
 		auto Snake = Cast<ASnakeBase>(Interactor);
@@ -52,4 +51,3 @@ void AFood::Interact(AActor* Interactor, bool bIsHead)
 		AFood::Destroy();
 	}
 }
-
