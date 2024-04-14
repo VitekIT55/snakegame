@@ -34,12 +34,14 @@ void ASnakeBase::Tick(float DeltaTime)
 void ASnakeBase::DestroySnake()
 {
 	ASnakeBase::Destroy();
+	GetWorld()->ForceGarbageCollection(true);
 }
 
 void ASnakeBase::AddSnakeElement(int ElementsNum)
 {
 	for (int i = 0; i < ElementsNum; ++i)
 	{
+		SnakeLenght += 1;
 		auto NewLocation = FVector(0, 0, 0);
 		if(SnakeElements.Num()>=4)
 			NewLocation = SnakeElements[SnakeElements.Num() - 1]->GetActorLocation();
@@ -53,6 +55,7 @@ void ASnakeBase::AddSnakeElement(int ElementsNum)
 		{
 			NewSnakeElem->SetFirstElementType();
 		}
+
 		auto a = SnakeElements[i]->GetActorLocation();
 		GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, a.ToString());
 		GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, FString::Printf(TEXT("i: %i"), i));
@@ -78,6 +81,7 @@ void ASnakeBase::Move()
 		break;
 	}
 	RotateBlock = 0;
+	BlockSpawn = 1;
 	SnakeElements[0]->ToggleCollision();
 	for (int i = SnakeElements.Num() - 1; i > 0; i--)
 	{
@@ -88,6 +92,7 @@ void ASnakeBase::Move()
 	}
 	SnakeElements[0]->AddActorWorldOffset(MovementVector);
 	SnakeElements[0]->ToggleCollision();
+	BlockSpawn = 0;
 }
 
 void ASnakeBase::SnakeElemenetOverlap(ASnakeElementBase* OverlappedElement, AActor* Other)
@@ -103,5 +108,10 @@ void ASnakeBase::SnakeElemenetOverlap(ASnakeElementBase* OverlappedElement, AAct
 			InteractableInterface->Interact(this, bIsFirst);
 		}
 	}
+}
+
+void ASnakeBase::SnakeHeadLocation()
+{
+	SnakeHL = SnakeElements[0]->GetActorLocation();
 }
 

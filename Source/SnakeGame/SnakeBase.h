@@ -30,20 +30,29 @@ public:
 	UPROPERTY(EditDefaultsOnly)
 	TSubclassOf<ASnakeElementBase> SnakeElementClass;
 
-	UPROPERTY(EditDefaultsOnly)
-	float ElementSize;
-
-	UPROPERTY(EditDefaultsOnly)
-	float MovementSpeed;
-
 	UPROPERTY()
 	TArray<ASnakeElementBase*> SnakeElements;
 
 	UPROPERTY()
 	EMovementDirection LastMoveDirection;
 
+	UPROPERTY(EditDefaultsOnly)
+	float ElementSize;
+
+	UPROPERTY(EditDefaultsOnly)
+	float MovementSpeed;
+
+	UPROPERTY(EditDefaultsOnly)
+	FVector SnakeHL;
+
 	UPROPERTY(EditAnywhere)
 	bool RotateBlock = 0;
+
+	UPROPERTY(EditAnywhere)
+	int SnakeLenght = 0;
+
+	UPROPERTY(EditAnywhere)
+	bool BlockSpawn = 0;
 
 protected:
 	// Called when the game starts or when spawned
@@ -53,12 +62,13 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
-	void DestroySnake();
-
 	UFUNCTION(BlueprintCallable)
 	void AddSnakeElement(int ElementsNum = 1);
 	UFUNCTION(BlueprintCallable)
 	void Move();
 	UFUNCTION()
 	void SnakeElemenetOverlap(ASnakeElementBase* OverlappedElement, AActor* Other);
+
+	void SnakeHeadLocation();
+	void DestroySnake();
 };

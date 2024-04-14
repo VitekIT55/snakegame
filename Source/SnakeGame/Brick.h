@@ -2,32 +2,29 @@
 
 #pragma once
 
-#include "CoreMinimal.h"
 #include "SnakeBase.h"
 #include "PlayerPawnBase.h"
-#include "GameFramework/Actor.h"
 #include "Interactable.h"
-#include "Food.generated.h"
+#include "CoreMinimal.h"
+#include "GameFramework/Actor.h"
+#include "Brick.generated.h"
 
 class APlayerPawnBase;
 
 UCLASS()
-class SNAKEGAME_API AFood : public AActor, public IInteractable
+class SNAKEGAME_API ABrick : public AActor, public IInteractable
 {
 	GENERATED_BODY()
 	
 public:	
 	// Sets default values for this actor's properties
-	AFood();
+	ABrick();
 
 	UPROPERTY(BlueprintReadWrite)
 	APlayerPawnBase* PlayerPawn;
 
 	UPROPERTY(EditDefaultsOnly)
 	TSubclassOf<APlayerPawnBase> PlayerPawnClass;
-
-	UPROPERTY(BlueprintReadWrite)
-	int FoodHealth = 1000;
 
 protected:
 	// Called when the game starts or when spawned
@@ -38,5 +35,4 @@ public:
 	virtual void Tick(float DeltaTime) override;
 
 	virtual void Interact(AActor* Interactor, bool bIsHead) override;
-
 };

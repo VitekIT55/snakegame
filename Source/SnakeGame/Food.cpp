@@ -29,7 +29,13 @@ void AFood::BeginPlay()
 void AFood::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
+	if (FoodHealth == 0)
+	{
+		PlayerPawn->FoodQuantity -= 1;
+		AFood::Destroy();
+	}
+	else
+		FoodHealth -= 1;
 }
 
 void AFood::Interact(AActor* Interactor, bool bIsHead)

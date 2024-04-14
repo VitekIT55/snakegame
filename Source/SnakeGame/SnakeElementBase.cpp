@@ -19,7 +19,6 @@ ASnakeElementBase::ASnakeElementBase()
 void ASnakeElementBase::BeginPlay()
 {
 	Super::BeginPlay();
-	//MeshComponent->OnComponentBeginOverlap.AddDynamic(this, &ASnakeElementBase::HandleBeginOverlap);
 }
 
 // Called every frame
@@ -39,7 +38,7 @@ void ASnakeElementBase::Interact(AActor* Interactor, bool bIsHead)
 	auto Snake = Cast<ASnakeBase>(Interactor);
 	if (IsValid(Snake))
 	{
-		Snake->Destroy();
+		Snake->DestroySnake();
 	}
 }
 
