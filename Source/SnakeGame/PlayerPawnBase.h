@@ -28,6 +28,9 @@ public:
 	UPROPERTY(EditDefaultsOnly)
 	TSubclassOf<ASnakeBase> SnakeActorClass;
 
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	bool SnakeDestroy = 0;
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	int Score = 0;
 

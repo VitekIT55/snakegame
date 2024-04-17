@@ -4,6 +4,7 @@
 #include "SnakeBase.h"
 #include "SnakeElementBase.h"
 #include "Interactable.h"
+#include <Kismet/GameplayStatics.h>
 #include "Engine/GameEngine.h"
 
 // Sets default values
@@ -18,6 +19,7 @@ ASnakeBase::ASnakeBase()
 void ASnakeBase::BeginPlay()
 {
 	Super::BeginPlay();
+	PlayerPawnActor = Cast<APlayerPawnBase>(UGameplayStatics::GetPlayerPawn(this, 0));
 	//SetActorTickInterval(MovementSpeed);
 	AddSnakeElement(4);
 }
@@ -33,6 +35,7 @@ void ASnakeBase::Tick(float DeltaTime)
 void ASnakeBase::DestroySnake()
 {
 	ASnakeBase::Destroy();
+	PlayerPawnActor->SnakeDestroy = 1;
 	GetWorld()->ForceGarbageCollection(true);
 }
 

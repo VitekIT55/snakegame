@@ -24,7 +24,6 @@ void APlayerPawnBase::BeginPlay()
 	Super::BeginPlay();
 	SetActorRotation(FRotator(-90, 0, 0));
 	CreateSnakeActor();
-	//SpawnRandomFoodActor();
 }
 
 // Called every frame
@@ -153,7 +152,6 @@ void APlayerPawnBase::SpawnBrickActor(FVector F)
 		bool bOverlap = GetWorld()->OverlapAnyTestByChannel(Location, FQuat::Identity, ECC_GameTraceChannel1, CollisionShape, CollisionParams);
 		if (!bOverlap)
 		{
-			//AActor* NewActor = GetWorld()->SpawnActor<AActor>(BrickClass, Location, Rotation);
 			if (i == ImaginaryObstacle)
 			{
 				AActor* NewActor = GetWorld()->SpawnActor<AActor>(FakeBrickClass, Location, Rotation);
@@ -171,7 +169,6 @@ void APlayerPawnBase::SpawnBrickActor(FVector F)
 
 void APlayerPawnBase::SetAllBricksCollision(bool Type)
 {
-	//UWorld* World = GetWorld();
 	TArray<AActor*> ActorsToFind;
 	UGameplayStatics::GetAllActorsOfClass(GetWorld(), BrickClass, ActorsToFind);
 	for (AActor* Actor : ActorsToFind)
@@ -180,7 +177,6 @@ void APlayerPawnBase::SetAllBricksCollision(bool Type)
 			Actor->SetActorEnableCollision(false);
 		else
 			Actor->SetActorEnableCollision(true);
-		//NewActor->SetActorEnableCollision(false);
 	}
 }
 

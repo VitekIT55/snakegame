@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "PlayerPawnBase.h"
 #include "GameFramework/Actor.h"
 #include "SnakeBase.generated.h"
 
@@ -30,6 +31,9 @@ public:
 	UPROPERTY(EditDefaultsOnly)
 	TSubclassOf<ASnakeElementBase> SnakeElementClass;
 
+	UPROPERTY(EditAnywhere)
+	APlayerPawnBase* PlayerPawnActor;
+
 	UPROPERTY()
 	TArray<ASnakeElementBase*> SnakeElements;
 
@@ -37,8 +41,8 @@ public:
 	EMovementDirection LastMoveDirection;
 
 	UPROPERTY(EditAnywhere)
-	float ElementSize = 60;
-	//EditDefaultsOnly
+	float ElementSize = 60; 
+
 	UPROPERTY(EditAnywhere)
 	float MovementSpeed = 0.5;
 
