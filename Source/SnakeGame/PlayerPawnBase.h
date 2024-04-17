@@ -34,8 +34,23 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	float Hunger = 1;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	int BonusType = 0;
+
+	UPROPERTY(EditAnywhere)
+	int BonusTime = 0;
+
+	UPROPERTY(EditAnywhere)
+	bool BricksCollision = 0;
+
+	UPROPERTY(EditAnywhere)
+	bool BonusActive = 0;
+
 	UPROPERTY(EditAnywhere)
 	float FoodQuantity = 0;
+
+	UPROPERTY(EditAnywhere)
+	bool SpawnFoodAllow = 1;
 
 	UPROPERTY()
 	float SpawnDelayX = 0.0f;
@@ -44,10 +59,7 @@ public:
 	float SpawnDelayY = 0.0f;
 
 	UPROPERTY()
-	int SpawnTimer = 100;
-
-	UPROPERTY()
-	int SpawnBrickTimer = 500;
+	int SpawnBrickTimer = 1000;
 
 protected:
 	// Called when the game starts or when spawned
@@ -66,9 +78,13 @@ public:
 	UPROPERTY(EditDefaultsOnly)
 	TSubclassOf<AActor> BrickClass;
 
+	UPROPERTY(EditDefaultsOnly)
+	TSubclassOf<AActor> FakeBrickClass;
+
 	void CreateSnakeActor();
 	void SpawnRandomFoodActor();
 	void SpawnBrickActor(FVector F);
+	void SetAllBricksCollision(bool Type);
 
 	UFUNCTION()
 	void HandlePlayerVerticalInput(float value);

@@ -19,18 +19,18 @@ void ABrick::BeginPlay()
 {
 	Super::BeginPlay();
 	PlayerPawn = Cast<APlayerPawnBase>(UGameplayStatics::GetPlayerPawn(this, 0));
-	if (!PlayerPawn)
-	{
-		UE_LOG(LogTemp, Error, TEXT("AFood::BeginPlay - Failed to get player pawn!"));
-		return;
-	}
 }
 
 // Called every frame
 void ABrick::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
+	if (BrickHealth == 0)
+	{
+		ABrick::Destroy();
+	}
+	else
+		BrickHealth -= 1;
 }
 
 void ABrick::Interact(AActor* Interactor, bool bIsHead)

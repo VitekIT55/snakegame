@@ -5,6 +5,7 @@
 #include "SnakeElementBase.h"
 #include "Engine/GameEngine.h"
 #include "Food.h"
+#include <Kismet/GameplayStatics.h>
 #include "Engine/Classes/Camera/CameraComponent.h"
 #include "Components/InputComponent.h"
 
@@ -37,21 +38,39 @@ void APlayerPawnBase::Tick(float DeltaTime)
 			SnakeActor->DestroySnake();
 		}
 		else if (Hunger > -0.1)
-			Hunger -= 0.001;
-		if (SpawnTimer > 0) 
-			SpawnTimer -= 1;
+			Hunger -= 0.0005;
 		SpawnBrickTimer -= 1;
-		if (SpawnTimer == 0 && SnakeActor->BlockSpawn == 0 && ((FoodQuantity + SnakeActor->SnakeLenght) < 225))
+		if (SpawnFoodAllow == 1 && SnakeActor->BlockSpawn == 0 && ((FoodQuantity + SnakeActor->SnakeLenght) < 225))
 		{
 			SpawnRandomFoodActor();
-			SpawnTimer = 100;
+			SpawnFoodAllow = 0;
 		}
 		SnakeActor->SnakeHeadLocation();
 		FVector MyCharacterPosition = SnakeActor->SnakeHL;
 		if (SpawnBrickTimer == 0)
 		{
 			SpawnBrickActor(MyCharacterPosition);
-			SpawnBrickTimer = 500;
+			SpawnBrickTimer = 1000;
+		}
+		if (BonusTime > 0)
+			BonusTime -= 1;
+		else if (BonusTime == 0 && BonusActive == 1)
+		{
+			switch (BonusType)
+			{
+			case 1:
+				SnakeActor->MovementSpeed *= 2.0f;
+				break;
+			case 2:
+				SnakeActor->MovementSpeed /= 2.0f;
+				break;
+			case 3:
+				SetAllBricksCollision(0);
+				BricksCollision = 0;
+				break;
+			}
+			BonusType = 0;
+			BonusActive = 0;
 		}
 	}
 }
@@ -90,9 +109,9 @@ void APlayerPawnBase::SpawnRandomFoodActor()
 	if (SpawnedFood)
 	{
 		FoodQuantity += 1;
-		auto FQ = FoodQuantity;
-		FString FFQ = FString::SanitizeFloat(FQ);
-		GEngine->AddOnScreenDebugMessage(-1, 1.0, FColor::Green, *FFQ);
+		//auto FQ = FoodQuantity;
+		//FString FFQ = FString::SanitizeFloat(FQ);
+		//GEngine->AddOnScreenDebugMessage(-1, 1.0, FColor::Green, *FFQ);
 	}
 }
 
@@ -101,6 +120,7 @@ void APlayerPawnBase::SpawnBrickActor(FVector F)
 	int NewX = F.X;
 	int NewY = F.Y;
 	FRotator Rotation(0.0f, 0.0f, 0.0f);
+	int ImaginaryObstacle = FMath::RandRange(0, 1);
 	for (int i = -1; i <= 1; i++)
 	{
 		switch (SnakeActor->LastMoveDirection)
@@ -133,10 +153,35 @@ void APlayerPawnBase::SpawnBrickActor(FVector F)
 		bool bOverlap = GetWorld()->OverlapAnyTestByChannel(Location, FQuat::Identity, ECC_GameTraceChannel1, CollisionShape, CollisionParams);
 		if (!bOverlap)
 		{
-			GetWorld()->SpawnActor<AActor>(BrickClass, Location, Rotation);
+			//AActor* NewActor = GetWorld()->SpawnActor<AActor>(BrickClass, Location, Rotation);
+			if (i == ImaginaryObstacle)
+			{
+				AActor* NewActor = GetWorld()->SpawnActor<AActor>(FakeBrickClass, Location, Rotation);
+				NewActor->SetActorEnableCollision(false);
+			}
+			else
+			{
+				AActor* NewActor = GetWorld()->SpawnActor<AActor>(BrickClass, Location, Rotation);
+				if (BricksCollision == 1) SetAllBricksCollision(1);
+			}
 		}
 	}
 	//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Black, FString::Printf(TEXT("Player Location: %s"), *MyCharacterPosition.ToString()));
+}
+
+void APlayerPawnBase::SetAllBricksCollision(bool Type)
+{
+	//UWorld* World = GetWorld();
+	TArray<AActor*> ActorsToFind;
+	UGameplayStatics::GetAllActorsOfClass(GetWorld(), BrickClass, ActorsToFind);
+	for (AActor* Actor : ActorsToFind)
+	{
+		if (Type == 1)
+			Actor->SetActorEnableCollision(false);
+		else
+			Actor->SetActorEnableCollision(true);
+		//NewActor->SetActorEnableCollision(false);
+	}
 }
 
 void APlayerPawnBase::HandlePlayerVerticalInput(float value)

@@ -36,11 +36,11 @@ public:
 	UPROPERTY()
 	EMovementDirection LastMoveDirection;
 
-	UPROPERTY(EditDefaultsOnly)
-	float ElementSize;
-
-	UPROPERTY(EditDefaultsOnly)
-	float MovementSpeed;
+	UPROPERTY(EditAnywhere)
+	float ElementSize = 60;
+	//EditDefaultsOnly
+	UPROPERTY(EditAnywhere)
+	float MovementSpeed = 0.5;
 
 	UPROPERTY(EditDefaultsOnly)
 	FVector SnakeHL;

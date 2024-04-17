@@ -26,6 +26,9 @@ public:
 	UPROPERTY(EditDefaultsOnly)
 	TSubclassOf<APlayerPawnBase> PlayerPawnClass;
 
+	UPROPERTY(BlueprintReadWrite)
+	int BrickHealth = 1000;
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;

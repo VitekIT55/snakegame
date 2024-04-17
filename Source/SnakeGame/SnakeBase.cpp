@@ -11,8 +11,6 @@ ASnakeBase::ASnakeBase()
 {
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
-	ElementSize = 100.f;
-	MovementSpeed = 1.f;
 	LastMoveDirection = EMovementDirection::DOWN;
 }
 
@@ -20,7 +18,7 @@ ASnakeBase::ASnakeBase()
 void ASnakeBase::BeginPlay()
 {
 	Super::BeginPlay();
-	SetActorTickInterval(MovementSpeed);
+	//SetActorTickInterval(MovementSpeed);
 	AddSnakeElement(4);
 }
 
@@ -28,6 +26,7 @@ void ASnakeBase::BeginPlay()
 void ASnakeBase::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+	SetActorTickInterval(MovementSpeed);
 	Move();
 }
 
@@ -56,9 +55,9 @@ void ASnakeBase::AddSnakeElement(int ElementsNum)
 			NewSnakeElem->SetFirstElementType();
 		}
 
-		auto a = SnakeElements[i]->GetActorLocation();
-		GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, a.ToString());
-		GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, FString::Printf(TEXT("i: %i"), i));
+		//auto a = SnakeElements[i]->GetActorLocation();
+		//GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, a.ToString());
+		//GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, FString::Printf(TEXT("i: %i"), i));
 	}
 }
 
@@ -82,7 +81,8 @@ void ASnakeBase::Move()
 	}
 	RotateBlock = 0;
 	BlockSpawn = 1;
-	SnakeElements[0]->ToggleCollision();
+	//SnakeElements[0]->ToggleCollision();
+	SnakeElements[0]->SetActorEnableCollision(false);
 	for (int i = SnakeElements.Num() - 1; i > 0; i--)
 	{
 		auto CurrentElement = SnakeElements[i];
@@ -91,7 +91,8 @@ void ASnakeBase::Move()
 		CurrentElement->SetActorLocation(PrevLocation);
 	}
 	SnakeElements[0]->AddActorWorldOffset(MovementVector);
-	SnakeElements[0]->ToggleCollision();
+	//SnakeElements[0]->ToggleCollision();
+	SnakeElements[0]->SetActorEnableCollision(true);
 	BlockSpawn = 0;
 }
 
