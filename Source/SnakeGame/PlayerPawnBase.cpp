@@ -71,6 +71,7 @@ void APlayerPawnBase::Tick(float DeltaTime)
 			BonusType = 0;
 			BonusActive = 0;
 		}
+		SnakeDestroy = SnakeActor->SnakeBaseDead;
 	}
 }
 

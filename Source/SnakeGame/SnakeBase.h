@@ -8,7 +8,6 @@
 #include "SnakeBase.generated.h"
 
 class ASnakeElementBase;
-class APlayerPawnBase;
 
 UENUM()
 enum class EMovementDirection
@@ -31,14 +30,14 @@ public:
 	UPROPERTY(EditDefaultsOnly)
 	TSubclassOf<ASnakeElementBase> SnakeElementClass;
 
-	UPROPERTY(EditAnywhere)
-	APlayerPawnBase* PlayerPawnActor;
-
 	UPROPERTY()
 	TArray<ASnakeElementBase*> SnakeElements;
 
 	UPROPERTY()
 	EMovementDirection LastMoveDirection;
+
+	UPROPERTY(EditAnywhere)
+	bool SnakeBaseDead = 0;
 
 	UPROPERTY(EditAnywhere)
 	float ElementSize = 60; 

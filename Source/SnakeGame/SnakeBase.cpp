@@ -19,8 +19,6 @@ ASnakeBase::ASnakeBase()
 void ASnakeBase::BeginPlay()
 {
 	Super::BeginPlay();
-	PlayerPawnActor = Cast<APlayerPawnBase>(UGameplayStatics::GetPlayerPawn(this, 0));
-	//SetActorTickInterval(MovementSpeed);
 	AddSnakeElement(4);
 }
 
@@ -34,8 +32,8 @@ void ASnakeBase::Tick(float DeltaTime)
 
 void ASnakeBase::DestroySnake()
 {
+	SnakeBaseDead = 1;
 	ASnakeBase::Destroy();
-	PlayerPawnActor->SnakeDestroy = 1;
 	GetWorld()->ForceGarbageCollection(true);
 }
 
@@ -57,10 +55,6 @@ void ASnakeBase::AddSnakeElement(int ElementsNum)
 		{
 			NewSnakeElem->SetFirstElementType();
 		}
-
-		//auto a = SnakeElements[i]->GetActorLocation();
-		//GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, a.ToString());
-		//GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, FString::Printf(TEXT("i: %i"), i));
 	}
 }
 
@@ -84,7 +78,6 @@ void ASnakeBase::Move()
 	}
 	RotateBlock = 0;
 	BlockSpawn = 1;
-	//SnakeElements[0]->ToggleCollision();
 	SnakeElements[0]->SetActorEnableCollision(false);
 	for (int i = SnakeElements.Num() - 1; i > 0; i--)
 	{
@@ -94,7 +87,6 @@ void ASnakeBase::Move()
 		CurrentElement->SetActorLocation(PrevLocation);
 	}
 	SnakeElements[0]->AddActorWorldOffset(MovementVector);
-	//SnakeElements[0]->ToggleCollision();
 	SnakeElements[0]->SetActorEnableCollision(true);
 	BlockSpawn = 0;
 }
