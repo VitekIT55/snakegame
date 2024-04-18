@@ -42,14 +42,14 @@ void AFood::Interact(AActor* Interactor, bool bIsHead)
 		if (IsValid(Snake))
 		{
 			int Bonus = FMath::RandRange(1, 1);
-			GEngine->AddOnScreenDebugMessage(-1, 1.0, FColor::Blue , *FString::SanitizeFloat(Bonus));
+			//GEngine->AddOnScreenDebugMessage(-1, 1.0, FColor::Blue , *FString::SanitizeFloat(Bonus));
 			if (Bonus == 1)
 			{
 				PlayerPawn->BonusTime = 500;
 				if (PlayerPawn->BonusActive == 0)
 				{
 					PlayerPawn->BonusType = FMath::RandRange(1, 4);
-					GEngine->AddOnScreenDebugMessage(-1, 1.0, FColor::Green, *FString::SanitizeFloat(PlayerPawn->BonusType));
+					//GEngine->AddOnScreenDebugMessage(-1, 1.0, FColor::Green, *FString::SanitizeFloat(PlayerPawn->BonusType));
 					switch (PlayerPawn->BonusType)
 					{
 					case 1:
@@ -68,7 +68,7 @@ void AFood::Interact(AActor* Interactor, bool bIsHead)
 					}
 					PlayerPawn->BonusActive = 1;
 				}
-				GEngine->AddOnScreenDebugMessage(-1, 1.0, FColor::Black, *FString::SanitizeFloat(PlayerPawn->SnakeActor->MovementSpeed));
+				//GEngine->AddOnScreenDebugMessage(-1, 1.0, FColor::Black, *FString::SanitizeFloat(PlayerPawn->SnakeActor->MovementSpeed));
 			}
 			PlayerPawn->Hunger = 1;
 			PlayerPawn->Score += 1;
