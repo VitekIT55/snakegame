@@ -27,7 +27,7 @@ void AFood::Tick(float DeltaTime)
 	if (FoodHealth == 0)
 	{
 		PlayerPawn->FoodQuantity -= 1;
-		PlayerPawn->SpawnFoodAllow = 1;
+		if (Gold != 1)	PlayerPawn->SpawnFoodAllow = 1;
 		AFood::Destroy();
 	}
 	else
@@ -38,22 +38,17 @@ void AFood::Interact(AActor* Interactor, bool bIsHead)
 {
 	if (bIsHead)
 	{
-		//if (PlayerPawn)
-		//{
-		//	auto a = PlayerPawn->Hunger;
-		//	GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, FString::Printf(TEXT("a: %a"), a));
-		//}
 		auto Snake = Cast<ASnakeBase>(Interactor);
 		if (IsValid(Snake))
 		{
-			float Bonus = FMath::RandRange(1, 1);
+			int Bonus = FMath::RandRange(1, 1);
 			GEngine->AddOnScreenDebugMessage(-1, 1.0, FColor::Blue , *FString::SanitizeFloat(Bonus));
 			if (Bonus == 1)
 			{
 				PlayerPawn->BonusTime = 500;
 				if (PlayerPawn->BonusActive == 0)
 				{
-					PlayerPawn->BonusType = FMath::RandRange(3, 3);
+					PlayerPawn->BonusType = FMath::RandRange(1, 4);
 					GEngine->AddOnScreenDebugMessage(-1, 1.0, FColor::Green, *FString::SanitizeFloat(PlayerPawn->BonusType));
 					switch (PlayerPawn->BonusType)
 					{
@@ -67,6 +62,9 @@ void AFood::Interact(AActor* Interactor, bool bIsHead)
 						PlayerPawn->SetAllBricksCollision(1);
 						PlayerPawn->BricksCollision = 1;
 						break;
+					case 4:
+						if (Gold != 1)	PlayerPawn->SpawnRandomFoodActor(1);
+						break;
 					}
 					PlayerPawn->BonusActive = 1;
 				}
@@ -74,7 +72,7 @@ void AFood::Interact(AActor* Interactor, bool bIsHead)
 			}
 			PlayerPawn->Hunger = 1;
 			PlayerPawn->Score += 1;
-			PlayerPawn->SpawnFoodAllow = 1;
+			if (Gold != 1)	PlayerPawn->SpawnFoodAllow = 1;
 			Snake->AddSnakeElement();
 		}
 		AFood::Destroy();

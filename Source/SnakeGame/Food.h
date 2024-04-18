@@ -27,7 +27,10 @@ public:
 	TSubclassOf<APlayerPawnBase> PlayerPawnClass;
 
 	UPROPERTY(BlueprintReadWrite)
-	int FoodHealth = 1000;
+	int FoodHealth = 1200;
+
+	UPROPERTY(BlueprintReadWrite)
+	bool Gold = 0;
 
 protected:
 	// Called when the game starts or when spawned

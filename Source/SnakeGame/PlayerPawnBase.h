@@ -79,13 +79,16 @@ public:
 	TSubclassOf<AActor> FoodClass;
 
 	UPROPERTY(EditDefaultsOnly)
+	TSubclassOf<AActor> GoldFoodClass;
+
+	UPROPERTY(EditDefaultsOnly)
 	TSubclassOf<AActor> BrickClass;
 
 	UPROPERTY(EditDefaultsOnly)
 	TSubclassOf<AActor> FakeBrickClass;
 
 	void CreateSnakeActor();
-	void SpawnRandomFoodActor();
+	void SpawnRandomFoodActor(bool Type = 0);
 	void SpawnBrickActor(FVector F);
 	void SetAllBricksCollision(bool Type);
 

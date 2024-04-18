@@ -88,7 +88,7 @@ void APlayerPawnBase::CreateSnakeActor()
 	SnakeActor = GetWorld()->SpawnActor<ASnakeBase>(SnakeActorClass, FTransform());
 }
 
-void APlayerPawnBase::SpawnRandomFoodActor()
+void APlayerPawnBase::SpawnRandomFoodActor(bool Type)
 {
 	SpawnDelayX = FMath::RandRange(-7, 7) * int(SnakeActor->ElementSize);
 	SpawnDelayY = FMath::RandRange(-7, 7) * int(SnakeActor->ElementSize);
@@ -104,13 +104,15 @@ void APlayerPawnBase::SpawnRandomFoodActor()
 		SpawnRandomFoodActor();
 		return;
 	}
-	AActor* SpawnedFood = GetWorld()->SpawnActor<AActor>(FoodClass, Location, Rotation);
-	if (SpawnedFood)
+	if (Type == 0)
 	{
-		FoodQuantity += 1;
-		//auto FQ = FoodQuantity;
-		//FString FFQ = FString::SanitizeFloat(FQ);
-		//GEngine->AddOnScreenDebugMessage(-1, 1.0, FColor::Green, *FFQ);
+		AActor* SpawnedFood = GetWorld()->SpawnActor<AActor>(FoodClass, Location, Rotation);
+		if (SpawnedFood) FoodQuantity += 1;
+	}
+	else
+	{
+		AActor* SpawnedFood = GetWorld()->SpawnActor<AActor>(GoldFoodClass, Location, Rotation);
+		if (SpawnedFood) FoodQuantity += 1;
 	}
 }
 
@@ -164,7 +166,6 @@ void APlayerPawnBase::SpawnBrickActor(FVector F)
 			}
 		}
 	}
-	//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Black, FString::Printf(TEXT("Player Location: %s"), *MyCharacterPosition.ToString()));
 }
 
 void APlayerPawnBase::SetAllBricksCollision(bool Type)
